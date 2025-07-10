@@ -9,12 +9,13 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://192.168.29.148:5173", // You can also use "*"
+    origin: "*", // Allow all origins (or replace with Vercel URL later)
     methods: ["GET", "POST"],
   },
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 let socketsConnected = new Set();
 
 io.on("connection", (socket) => {
@@ -36,5 +37,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log(`✅ Socket.IO server running on http://192.168.29.148:${PORT}`);
+  console.log(`✅ Socket.IO server running on port ${PORT}`);
 });
