@@ -3,7 +3,7 @@ import moment from "moment";
 import { io } from "socket.io-client";
 import { motion, AnimatePresence } from "framer-motion";
 
-const socket = io("http://192.168.29.148:3000");
+const socket = io("https://chatapplication-wp05.onrender.com"); // ✅ Cloud URL
 
 function App() {
   const [clientsTotal, setClientsTotal] = useState(0);
