@@ -3,7 +3,7 @@ import moment from "moment";
 import { io } from "socket.io-client";
 import { motion, AnimatePresence } from "framer-motion";
 
-const socket = io("https://chatapplication-wp05.onrender.com"); // ✅ Cloud URL
+const socket = io("https://chatapplication-wp05.onrender.com");
 
 function App() {
   const [clientsTotal, setClientsTotal] = useState(0);
@@ -11,7 +11,7 @@ function App() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [feedback, setFeedback] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [screen, setScreen] = useState("landing"); // landing | login | chat
   const messageContainerRef = useRef(null);
 
   useEffect(() => {
@@ -60,11 +60,42 @@ function App() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (name.trim() === "") return;
-    setIsLoggedIn(true);
+    if (!name.trim()) return;
+    setScreen("chat");
   };
 
-  if (!isLoggedIn) {
+  // Landing Screen
+  if (screen === "landing") {
+    return (
+      <motion.div
+        className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-white to-blue-50 px-6 text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <motion.h1
+          className="text-4xl md:text-5xl font-bold text-blue-700 mb-6"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+        >
+          Welcome to Real-Time Chat 💬
+        </motion.h1>
+        <p className="text-gray-600 mb-8 max-w-md">
+          Experience live messaging with instant feedback and smooth animations.
+        </p>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setScreen("login")}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded shadow-md font-medium"
+        >
+          Join Now
+        </motion.button>
+      </motion.div>
+    );
+  }
+
+  // Login Screen
+  if (screen === "login") {
     return (
       <motion.div
         className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-blue-50"
@@ -78,9 +109,9 @@ function App() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200 }}
         >
-          <h1 className="text-2xl font-bold text-blue-700">Welcome</h1>
+          <h1 className="text-2xl font-bold text-blue-700">Join the Chat</h1>
           <p className="text-sm text-gray-500">
-            Enter your name to join the chat
+            Enter your name to get started
           </p>
           <input
             type="text"
@@ -95,13 +126,14 @@ function App() {
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded shadow"
           >
-            Join Chat
+            Enter Chat
           </motion.button>
         </motion.form>
       </motion.div>
     );
   }
 
+  // Chat Screen
   return (
     <motion.div
       className="min-h-screen bg-gradient-to-br from-white to-blue-50 flex items-center justify-center p-4"
