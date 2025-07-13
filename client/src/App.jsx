@@ -3,7 +3,7 @@ import moment from "moment";
 import { io } from "socket.io-client";
 import { motion, AnimatePresence } from "framer-motion";
 
-const socket = io("https://chatapplication-wp05.onrender.com");
+const socket = io("https://chatapplication-blcj.onrender.com/");
 
 function App() {
   const [clientsTotal, setClientsTotal] = useState(0);
