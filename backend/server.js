@@ -6,10 +6,16 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
+// ✅ Health check route
+app.get("/", (req, res) => {
+  res.send("✅ Chat backend is live.");
+});
+
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow all origins (or replace with Vercel URL later)
+    origin: "*", // You can restrict this to Vercel frontend URL later
     methods: ["GET", "POST"],
   },
 });
